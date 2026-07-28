@@ -1,0 +1,40 @@
+Metadata-Version: 2.4
+Name: aci-spec
+Version: 0.1.0
+Summary: Agent Interaction Specification — schema and validation for ACI manifests
+Author: ACI Contributors
+License: MIT
+Project-URL: Homepage, https://github.com/nousresearch/agent-interaction-specs
+Project-URL: Repository, https://github.com/nousresearch/agent-interaction-specs
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Dynamic: license-file
+
+# ACI Spec
+
+Agent Interaction Specification — schema and validation for ACI agent manifests.
+
+## Usage
+
+```python
+from aci import SpecValidator, VERSION
+
+validator = SpecValidator()
+manifest = {
+    "agent_name": "my-agent",
+    "version": "1.0.0",
+    "capabilities": ["tool_use", "memory"],
+    "constraints": {"max_tokens": 4096},
+}
+validator.validate_manifest(manifest)  # returns manifest on success
+```

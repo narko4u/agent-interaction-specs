@@ -1,110 +1,48 @@
-# Agent Interaction Specs
+# Agent Interaction Specs — Open Standards Stack
 
-**Open standards for autonomous AI agent communication and governance.**
+**ACI** | **AIP** | **AJSON**
 
-A three-layer specification stack that lets agents discover, invoke, and document their capabilities — regardless of platform, provider, or jurisdiction.
+An open standards stack for autonomous agent interaction, governance, and evidence.
 
-```
-┌───────────────────────────────────────────────────────┐
-│                **AJSON Spec**                         │
-│  Agent JSON — manifest & message format               │
-│  "How agents describe themselves"                     │
-│  `pip install ajson-spec`                             │
-├───────────────────────────────────────────────────────┤
-│                    **AIP**                             │
-│  Agent Interaction Protocol — HTTP + event model      │
-│  "How agents talk to each other"                      │
-│  `go get github.com/empirelabs/aip`                  │
-├───────────────────────────────────────────────────────┤
-│                    **ACI**                             │
-│  Agent Interaction Capabilities — discovery schema    │
-│  "What agents can do"                                 │
-│  `pip install aci-spec`                               │
-└───────────────────────────────────────────────────────┘
-```
+## What's Here
 
----
+- **ACI** — Agent Interaction Specification: agent manifest schema and validation library
+  - `aci/py/` — Python package (`pip install aci-spec`)
+  - Schema: `agent_name`, `version`, `capabilities`, `constraints`
 
-## The Stack
+- **AIP** — Agent Interaction Protocol: receipt chain and interaction record types
+  - `aip/go/` — Go module (`go get github.com/empirelabs/aip`)
+  - Types: `AgentReceipt`, `ActionRecord`, `ReceiptChain`, `Capability`
 
-| Layer | What It Does | Reference Implementation | Status |
-|-------|-------------|------------------------|--------|
-| **ACI** | Capability discovery — agents publish what they can do | Python (`aci-spec` on PyPI) | Active |
-| **AIP** | Action protocol — agents invoke capabilities via structured HTTP | Go (`github.com/empirelabs/aip`) | Active |
-| **AJSON Spec** | Manifest format — agent identity, boundaries, and state | Python (`ajson-spec` on PyPI) | [Active](https://github.com/narko4u/ajson) |
-
-Each layer is independently usable. Together they form a complete stack for agent-to-agent interaction with built-in audit and governance hooks.
-
----
-
-## Why This Exists
-
-Current LLM agents are black boxes. They have no standard way to:
-
-- **Declare capabilities** — "I can send emails, process refunds, and query databases"
-- **Authenticate** — "I am agent X, operated by Y, authorised to do Z"
-- **Enforce boundaries** — "This action requires human approval before execution"
-- **Evidence generation** — "Here is the cryptographically signed chain of events for every action I took"
-
-ACI, AIP, and AJSON solve this. They are the interoperability layer that turns autonomous agents from opaque scripts into auditable, governable systems.
-
----
-
-## Repository Structure
-
-```
-agent-interaction-specs/
-├── aci/
-│   ├── spec/              # ACI specification documents
-│   ├── py/                # Python reference implementation
-│   └── tests/             # Conformance tests
-├── aip/
-│   ├── spec/              # AIP specification documents
-│   ├── go/                # Go reference implementation
-│   └── tests/             # Conformance tests
-├── LICENSE
-└── README.md
-```
-
-**AJSON Spec** lives in its own [standalone repository](https://github.com/narko4u/ajson) — it is a data format with no runtime dependencies, usable in any agent system. Install via `pip install ajson-spec`.
-
----
+- **AJSON** — Agent JSON Notation: superset of JSON for agent manifests and interaction records
 
 ## Quick Start
 
-```bash
-# Clone the whole stack
-git clone https://github.com/narko4u/agent-interaction-specs
-cd agent-interaction-specs
+```python
+from aci import SpecValidator
 
-# Python ACI reference implementation
-pip install aci-spec
-
-# Go AIP reference implementation
-go get github.com/empirelabs/aip
-
-# Python AJSON Spec reference implementation
-pip install ajson-spec
+v = SpecValidator()
+manifest = v.validate_manifest({
+    "agent_name": "my-agent",
+    "version": "1.0.0",
+    "capabilities": ["web", "code"],
+    "constraints": {"max_tokens": 16000}
+})
 ```
 
----
+```go
+import "github.com/empirelabs/aip"
 
-## Governance & Compliance
+receipt := aip.AgentReceipt{
+    AgentName:   "my-agent",
+    ActionType:  "execute",
+    Status:      "allowed",
+    EvidenceE3:  "sha256:abc...",
+}
+```
 
-These specifications are the open foundation for **WitnessOS** — the enterprise enforcement gateway that uses ACI, AIP, and AJSON to generate verifiable compliance evidence.
+## License
 
-- Standards alignment: NSA MCP, EU AI Act, NIST CAISI, Singapore AI Verify
-- Evidence grades: E0 (raw) → E4 (independently verifiable)
-- Cryptographic chain: every action leaves a signed, hash-chained receipt
+MIT — Empire Labs Pty Ltd
 
----
-
-## Contributing
-
-This is an early-stage open standard. Contributions are welcome — spec clarifications, new language implementations, conformance tests, and bug reports.
-
-See the individual spec directories for contribution guidelines.
-
----
-
-**Empire Labs Pty Ltd** · [empirelabs.com.au](https://www.empirelabs.com.au) · contact@empirelabs.com.au
+[www.empirelabs.com.au](https://www.empirelabs.com.au)
