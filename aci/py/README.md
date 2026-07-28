@@ -1,18 +1,30 @@
-# ACI Spec
+# ACI Spec — Agent Capability Interface
 
-Agent Interaction Specification — schema and validation for ACI agent manifests.
+An open standard for AI agent capability discovery and interoperability.
+
+## Installation
+
+```bash
+pip install aci-spec
+```
 
 ## Usage
 
 ```python
-from aci import SpecValidator, VERSION
+from aci import SpecValidator, MANIFEST_SCHEMA
+
+manifest = {
+    "agent_name": "research-agent-v1",
+    "version": "1.0.0",
+    "capabilities": ["web_search", "code_execution"],
+    "constraints": {"max_tokens": 32000}
+}
 
 validator = SpecValidator()
-manifest = {
-    "agent_name": "my-agent",
-    "version": "1.0.0",
-    "capabilities": ["tool_use", "memory"],
-    "constraints": {"max_tokens": 4096},
-}
-validator.validate_manifest(manifest)  # returns manifest on success
+result = validator.validate_manifest(manifest)
+print(result)
 ```
+
+## License
+
+MIT
