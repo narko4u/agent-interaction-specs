@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Standards for EU AI Act Compliance | Empire Labs</title>
+  <meta name="description" content="Open standards for AI agent interoperability and governance compliance. ACI, AIP, and AJSON — built for the EU AI Act enforcement era.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #121214;
+      --bg-elevated: #1a1a1e;
+      --bg-card: #18181b;
+      --border: #27272a;
+      --border-hover: #3f3f46;
+      --text-primary: #fafafa;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --accent: #22c55e;
+      --accent-dim: #166534;
+      --red: #ef4444;
+      --orange: #f97316;
+      --blue: #3b82f6;
+      --purple: #a855f7;
+      --gradient-accent: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      --gradient-hero: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .nav-logo svg { width: 28px; height: 28px; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-cta {
+      background: var(--gradient-accent);
+      color: #000 !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+      font-size: 14px;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.9; color: #000 !important; }
+    .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-primary); cursor: pointer; padding: 8px; }
+
+    /* Hero */
+    .hero {
+      padding: 160px 0 100px;
+      background: var(--gradient-hero);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--red);
+      margin-bottom: 24px;
+    }
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+    }
+    .hero h1 .highlight { background: var(--gradient-accent); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gradient-accent);
+      color: #000;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 16px;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+
+    /* Trust Bar */
+    .trust-bar {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .trust-bar p {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+    .trust-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .trust-logos span {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+    .trust-logos code {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-secondary);
+      background: var(--bg-elevated);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+    }
+
+    /* Sections common */
+    section { padding: 100px 0; }
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .section-sub {
+      color: var(--text-secondary);
+      font-size: 18px;
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+
+    /* Urgency Section */
+    #urgency {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .urgency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .urgency-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    .urgency-card .date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--red);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .urgency-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .urgency-card p {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    .urgency-list { list-style: none; }
+    .urgency-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    .urgency-list li:last-child { border-bottom: none; }
+    .urgency-list li::before {
+      content: '⚠️';
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Standards */
+    #standards { background: var(--bg-primary); }
+    .standards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .standard-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .standard-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+    .standard-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 20px;
+    }
+    .standard-icon.aci { background: rgba(34, 197, 94, 0.1); color: var(--accent); }
+    .standard-icon.aip { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+    .standard-icon.ajson { background: rgba(168, 85, 247, 0.1); color: var(--purple); }
+    .standard-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+    .standard-card .install {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      background: var(--bg-elevated);
+      padding: 8px 12px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .standard-card p {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .standards-cta {
+      text-align: center;
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+    .standards-cta p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    /* How It Works / Governance */
+    #governance {
+      background: var(--bg-secondary);
+    }
+    .gov-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .gov-steps { list-style: none; }
+    .gov-steps li {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .gov-steps li:last-child { border-bottom: none; }
+    .gov-step-num {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--accent);
+    }
+    .gov-steps h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .gov-steps p {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    .gov-visual {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+    .gov-visual code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: block;
+      text-align: left;
+      line-height: 1.8;
+    }
+    .gov-visual .comment { color: #52525b; }
+
+    /* Compliance Mapping */
+    #mapping { background: var(--bg-primary); }
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .map-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+    .map-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .map-card ul { list-style: none; }
+    .map-card li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 14px;
+    }
+    .map-card li:last-child { border-bottom: none; }
+    .map-card .req { color: var(--text-secondary); }
+    .map-card .cap { color: var(--accent); font-weight: 500; text-align: right; }
+
+    /* CTA */
+    #cta {
+      background: var(--gradient-hero);
+      text-align: center;
+      padding: 120px 0;
+      position: relative;
+    }
+    #cta::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #cta .container { position: relative; z-index: 1; }
+    #cta h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; margin-bottom: 16px; }
+    #cta p {
+      color: var(--text-secondary);
+      font-size: 18px;
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    footer p { color: var(--text-muted); font-size: 14px; }
+    footer a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+    footer a:hover { color: var(--text-primary); }
+    .footer-links { display: flex; gap: 24px; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .urgency-grid { grid-template-columns: 1fr; }
+      .standards-grid { grid-template-columns: 1fr; }
+      .gov-grid { grid-template-columns: 1fr; }
+      .map-grid { grid-template-columns: 1fr; }
+      .hero { padding: 120px 0 60px; }
+      section { padding: 60px 0; }
+      .trust-logos { gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="/" class="nav-logo">
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="2" width="24" height="24" rx="6" stroke="#22c55e" stroke-width="2"/>
+          <path d="M9 14h10M14 9v10" stroke="#22c55e" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Agent Standards
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#urgency">Deadline</a></li>
+        <li><a href="#standards">Standards</a></li>
+        <li><a href="#governance">Governance</a></li>
+        <li><a href="#mapping">Compliance</a></li>
+        <li><a href="#cta" class="nav-cta">Get Compliant</a></li>
+      </ul>
+      <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        EU AI Act Enforcement — 5 Days Away
+      </div>
+      <h1>
+        Open Standards for<br>
+        <span class="highlight">Agent Governance</span><br>
+        &amp; Compliance
+      </h1>
+      <p>
+        ACI, AIP, and AJSON — an open stack for AI agent interoperability, capability discovery, and compliance enforcement. Built for the era of AI regulation.
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">
+          Get Compliant Before Aug 2 →
+        </a>
+        <a href="#standards" class="btn-secondary">
+          Explore the Standards
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Bar -->
+  <section class="trust-bar">
+    <div class="container">
+      <p>The Open Agent Standards Stack</p>
+      <div class="trust-logos">
+        <code>pip install aci-spec</code>
+        <code>go get github.com/empirelabs/aip</code>
+        <code>pip install ajson-spec</code>
+        <span>|</span>
+        <span>Open Source · MIT</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Urgency -->
+  <section id="urgency">
+    <div class="container">
+      <div class="urgency-grid">
+        <div>
+          <div class="section-label">Why Now</div>
+          <h2 class="section-title">EU AI Act Enforcement<br>Starts August 2</h2>
+          <p class="section-sub">
+            High-risk AI systems must comply with transparency, risk management, and human oversight obligations. Your agent infrastructure needs auditable governance — now.
+          </p>
+        </div>
+        <div class="urgency-card">
+          <div class="date">Aug 2</div>
+          <h3>What Changes</h3>
+          <ul class="urgency-list">
+            <li>High-risk AI obligations enter force — including agentic systems</li>
+            <li>Transparency requirements for AI-generated content and decisions</li>
+            <li>Risk management and human oversight mandates apply</li>
+            <li>Non-compliance penalties: up to 7% of global annual turnover or €35M</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Standards -->
+  <section id="standards">
+    <div class="container">
+      <div class="section-label">Open Standards</div>
+      <h2 class="section-title">The Agent Standards Stack</h2>
+      <p class="section-sub">
+        Three complementary specifications that together form a complete framework for agent interoperability and governance.
+      </p>
+      <div class="standards-grid">
+        <div class="standard-card">
+          <div class="standard-icon aci">ACI</div>
+          <h3>Agent Capability Interface</h3>
+          <span class="install">pip install aci-spec</span>
+          <p>A discoverability and interoperability standard. Agents declare capabilities, tools, and constraints in a machine-readable format. Enables autonomous agent-to-agent negotiation and audit.</p>
+        </div>
+        <div class="standard-card">
+          <div class="standard-icon aip">AIP</div>
+          <h3>Agent Interaction Protocol</h3>
+          <span class="install">go get github.com/empirelabs/aip</span>
+          <p>A transport-agnostic protocol for agent-to-agent and agent-to-system communication. Handles request routing, capability negotiation, and execution receipts with cryptographic verification.</p>
+        </div>
+        <div class="standard-card">
+          <div class="standard-icon ajson">AJSON</div>
+          <h3>Agent JSON Specification</h3>
+          <span class="install">pip install ajson-spec</span>
+          <p>A superset of JSON optimized for agent manifests and execution contexts. Supports typed schemas, temporal data, cryptographic proofs, and cross-reference resolution out of the box.</p>
+        </div>
+      </div>
+      <div class="standards-cta">
+        <p>These standards are open source (MIT). Inspect the code, contribute, or build your own implementation.</p>
+        <a href="https://github.com/narko4u/agent-interaction-specs" class="btn-secondary" target="_blank" rel="noopener">View on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Governance / Enforcement Layer -->
+  <section id="governance">
+    <div class="container">
+      <div class="section-label">Compliance Enforcement</div>
+      <h2 class="section-title">From Standards to Governance</h2>
+      <p class="section-sub">
+        Standards give you interoperability. An enforcement layer gives you compliance. Here's how the stack connects.
+      </p>
+      <div class="gov-grid">
+        <ul class="gov-steps">
+          <li>
+            <span class="gov-step-num">1</span>
+            <div>
+              <h4>Declare with ACI</h4>
+              <p>Agents publish capability manifests describing their tools, data access, and operational constraints in a standardised format. Every capability is enumerable and auditable.</p>
+            </div>
+          </li>
+          <li>
+            <span class="gov-step-num">2</span>
+            <div>
+              <h4>Execute with AIP</h4>
+              <p>All agent actions flow through AIP — requests, responses, tool calls, and data access produce signed cryptographic receipts. Nothing happens off-ledger.</p>
+            </div>
+          </li>
+          <li>
+            <span class="gov-step-num">3</span>
+            <div>
+              <h4>Govern with Enforcement Layer</h4>
+              <p>A runtime that validates every action against policy before execution, records evidence for audit trails, and enforces compliance boundaries. Humans get real-time oversight dashboards.</p>
+            </div>
+          </li>
+          <li>
+            <span class="gov-step-num">4</span>
+            <div>
+              <h4>Audit with Evidence</h4>
+              <p>Every action generates an evidence chain: who requested what, which policy was checked, what was approved or denied, and the cryptographic receipt. Ready for regulatory submission.</p>
+            </div>
+          </li>
+        </ul>
+        <div class="gov-visual">
+          <code>
+            <span class="comment"># ACI manifest — agent declares capabilities</span><br>
+            {<br>
+            &nbsp;&nbsp;"agent": "research-agent-v1",<br>
+            &nbsp;&nbsp;"capabilities": ["web_search", "code_execution"],<br>
+            &nbsp;&nbsp;"constraints": { "max_tokens": 32000 }<br>
+            }<br><br>
+            <span class="comment"># AIP receipt — signed execution evidence</span><br>
+            {<br>
+            &nbsp;&nbsp;"action": "web_search",<br>
+            &nbsp;&nbsp;"policy_check": "data_egress_allow",<br>
+            &nbsp;&nbsp;"receipt": "0x7e...af",<br>
+            &nbsp;&nbsp;"timestamp": "2026-07-28T14:30:00Z"<br>
+            }
+          </code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Compliance Mapping -->
+  <section id="mapping">
+    <div class="container">
+      <div class="section-label">Regulatory Mapping</div>
+      <h2 class="section-title">Compliance Coverage</h2>
+      <p class="section-sub">
+        The governance stack maps directly to multiple regulatory frameworks. One implementation, multiple compliance outcomes.
+      </p>
+      <div class="map-grid">
+        <div class="map-card">
+          <h3>🇪🇺 EU AI Act</h3>
+          <ul>
+            <li><span class="req">Risk management (Art. 9)</span> <span class="cap">✓ Policy evaluation</span></li>
+            <li><span class="req">Human oversight (Art. 14)</span> <span class="cap">✓ Real-time dashboards</span></li>
+            <li><span class="req">Transparency (Art. 13)</span> <span class="cap">✓ Evidence receipts</span></li>
+            <li><span class="req">Record keeping (Art. 12)</span> <span class="cap">✓ Audit trail export</span></li>
+            <li><span class="req">Accuracy/robustness (Art. 15)</span> <span class="cap">✓ Constraint enforcement</span></li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>🇺🇸 NIST CAISI</h3>
+          <ul>
+            <li><span class="req">Agent identification</span> <span class="cap">✓ ACI manifests</span></li>
+            <li><span class="req">Capability disclosure</span> <span class="cap">✓ ACI capability registry</span></li>
+            <li><span class="req">Audit trails</span> <span class="cap">✓ AIP receipts</span></li>
+            <li><span class="req">Human-in-the-loop</span> <span class="cap">✓ Policy gate checks</span></li>
+            <li><span class="req">Interoperability</span> <span class="cap">✓ Open standard stack</span></li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>🇸🇬 Singapore AI Verify</h3>
+          <ul>
+            <li><span class="req">Transparency documentation</span> <span class="cap">✓ Evidence export</span></li>
+            <li><span class="req">Governance processes</span> <span class="cap">✓ Runtime enforcement</span></li>
+            <li><span class="req">Operational monitoring</span> <span class="cap">✓ Dashboard oversight</span></li>
+            <li><span class="req">Third-party auditability</span> <span class="cap">✓ Receipt verification</span></li>
+          </ul>
+        </div>
+        <div class="map-card">
+          <h3>🛡️ NSA MCP Guidance</h3>
+          <ul>
+            <li><span class="req">Workflow integrity</span> <span class="cap">✓ Signed execution chains</span></li>
+            <li><span class="req">Tool access control</span> <span class="cap">✓ Policy-based gating</span></li>
+            <li><span class="req">Data provenance</span> <span class="cap">✓ Evidence receipts</span></li>
+            <li><span class="req">Audit readiness</span> <span class="cap">✓ Exportable compliance reports</span></li>
+            <li><span class="req">Trust boundaries</span> <span class="cap">✓ Capability constraint enforcement</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="container">
+      <h2>Ready to Govern Your Agents?</h2>
+      <p>
+        Deploy the compliance enforcement layer before August 2. Enterprise deployment, proof of concept, or technical deep-dive.
+      </p>
+      <div class="cta-buttons">
+        <a href="mailto:contact@empirelabs.com.au?subject=AI%20Agent%20Compliance%20Inquiry" class="btn-primary">
+          Contact Us →
+        </a>
+        <a href="https://github.com/narko4u/agent-interaction-specs" class="btn-secondary" target="_blank" rel="noopener">
+          Explore Open Source
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2026 Empire Labs Pty Ltd. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="https://github.com/narko4u">GitHub</a>
+        <a href="https://www.empirelabs.com.au">empirelabs.com.au</a>
+        <a href="mailto:contact@empirelabs.com.au">contact@empirelabs.com.au</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
