@@ -3,73 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent Interaction Specs — Open Standards Stack</title>
+<title>ACI · AIP · AJSON — Open Standards for Autonomous AI Agents</title>
 <style>
 :root {
-  --bg: #0a0a0f; --surface: #111118; --border: #1e1e2a;
-  --text: #e0e0e8; --muted: #6b6b7b; --accent: #00d4aa;
-  --font: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a28;
+  --border: #222240;
+  --text: #e4e4ec;
+  --muted: #7878a0;
+  --accent: #00d4aa;
+  --accent-dim: #009a7a;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  font-family: var(--font); background: var(--bg); color: var(--text);
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; padding: 2rem 1rem;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.hero { text-align: center; max-width: 720px; margin-bottom: 2rem; }
-.hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-.hero h1 span { color: var(--accent); }
-.hero p { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
-.badges { display: flex; gap: 1rem; justify-content: center; margin: 1rem 0; }
-.badge { padding: 0.25rem 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem; }
-.badge-aci { border-color: var(--accent); color: var(--accent); }
-.badge-aip { border-color: #3b82f6; color: #3b82f6; }
-.badge-ajson { border-color: #8b5cf6; color: #8b5cf6; }
-.cards { display: grid; gap: 1rem; width: 100%; max-width: 720px; }
+
+.container { width: 100%; max-width: 880px; padding: 0 1.5rem; }
+
+/* ─── Nav ─── */
+nav {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+nav .logo {
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+nav .logo span { color: var(--text); }
+nav .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+nav .nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+nav .nav-links a:hover { color: var(--text); }
+
+/* ─── Hero ─── */
+.hero {
+  text-align: center;
+  padding: 5rem 1.5rem 3rem;
+  width: 100%;
+}
+.hero h1 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.hero h1 .highlight { color: var(--accent); }
+.hero .subtitle {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+.hero-badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+.badge {
+  padding: 0.35rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-family: var(--mono);
+  font-weight: 600;
+  border: 1px solid;
+}
+.badge-aci { border-color: var(--accent); color: var(--accent); background: rgba(0,212,170,0.08); }
+.badge-aip { border-color: var(--blue); color: var(--blue); background: rgba(59,130,246,0.08); }
+.badge-ajson { border-color: var(--purple); color: var(--purple); background: rgba(139,92,246,0.08); }
+.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.6rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary { background: var(--accent); color: var(--bg); }
+.btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,170,0.25); }
+.btn-outline { border: 1px solid var(--border); color: var(--text); background: transparent; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ─── Section Header ─── */
+.section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.section-header p {
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ─── Spec Cards ─── */
+.cards { display: grid; gap: 1.25rem; margin-bottom: 4rem; }
 .card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
-  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.75rem;
+  transition: border-color 0.2s, transform 0.2s;
 }
-.card h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
-.card p { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem; }
+.card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.card .card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.card h3 { font-size: 1.15rem; margin-bottom: 0.4rem; }
+.card .card-desc { color: var(--muted); font-size: 0.88rem; margin-bottom: 1rem; }
+.card .card-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+.tag-aci { background: rgba(0,212,170,0.1); color: var(--accent); }
+.tag-aip { background: rgba(59,130,246,0.1); color: var(--blue); }
+.tag-ajson { background: rgba(139,92,246,0.1); color: var(--purple); }
 .card pre {
-  background: var(--bg); padding: 0.75rem; border-radius: 4px; font-size: 0.8rem;
-  overflow-x: auto; border: 1px solid var(--border);
+  background: var(--surface2);
+  padding: 0.85rem;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  overflow-x: auto;
+  line-height: 1.4;
+  border: 1px solid var(--border);
 }
-.card code { color: var(--accent); }
-.footer { color: var(--muted); font-size: 0.75rem; margin-top: 2rem; text-align: center; }
-.footer a { color: var(--muted); }
-.cta {
-  display: inline-block; margin-top: 1rem; padding: 0.6rem 1.5rem;
-  background: var(--accent); color: var(--bg); text-decoration: none;
-  border-radius: 4px; font-weight: 600; transition: opacity 0.2s;
+.card pre code { color: var(--accent); }
+.card .card-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
 }
-.cta:hover { opacity: 0.9; }
+.card .card-link:hover { opacity: 0.8; }
+
+/* ─── Lead Capture ─── */
+.lead-section {
+  width: 100%;
+  padding: 3rem 1.5rem 4rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4rem;
+}
+.lead-section .container { max-width: 600px; }
+.lead-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.lead-form input,
+.lead-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.lead-form input:focus,
+.lead-form textarea:focus { border-color: var(--accent); }
+.lead-form input::placeholder,
+.lead-form textarea::placeholder { color: var(--muted); }
+.lead-form textarea { min-height: 100px; resize: vertical; }
+.lead-form .btn { align-self: flex-start; }
+.form-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+/* ─── Demo CTA ─── */
+.demo-section {
+  text-align: center;
+  padding: 3rem 1.5rem 4rem;
+  width: 100%;
+}
+.demo-section h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.75rem; }
+.demo-section p { color: var(--muted); font-size: 1rem; margin-bottom: 1.5rem; }
+.demo-card {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+}
+.demo-card .cal-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.demo-card h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
+.demo-card p { font-size: 0.85rem; margin-bottom: 1.5rem; }
+
+/* ─── Social Proof ─── */
+.social-proof {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.social-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.social-item:hover { color: var(--text); }
+.social-item .stat { color: var(--accent); font-weight: 700; font-family: var(--mono); }
+
+/* ─── Footer ─── */
+.footer {
+  width: 100%;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer a:hover { color: var(--accent); }
+.footer-links { display: flex; gap: 1.5rem; }
+
+/* ─── Animated gradient border for hero ─── */
+.gradient-line {
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--blue), var(--purple), var(--accent));
+  background-size: 300% 100%;
+  animation: shimmer 6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 1.8rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .demo-card { padding: 1.5rem; }
+  .footer { flex-direction: column; text-align: center; }
+  nav .nav-links a:not(.btn) { display: none; }
+}
 </style>
 </head>
 <body>
-<div class="hero">
-  <h1><span>Agent Interaction</span> Specs</h1>
-  <p>An open standards stack for governing autonomous agent interaction, credential brokering, and tamper-evident evidence chains.</p>
-  <div class="badges">
-    <span class="badge badge-aci">ACI v0.1.0</span>
-    <span class="badge badge-aip">AIP v0.1.0</span>
-    <span class="badge badge-ajson">AJSON v0.1.0</span>
-  </div>
-  <p style="margin-top: 0.5rem;">
-    <a href="https://www.empirelabs.com.au" style="color: var(--muted);">by Empire Labs Pty Ltd</a>
-    </p>
-    <div style="margin-top: 1.5rem;">
-    <a href="mailto:contact@empirelabs.com.au?subject=ACI%20Agent%20Governance%20Inquiry&body=Hi%20Empire%20Labs%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20the%20ACI%20open%20standard%20and%20how%20it%20applies%20to%20our%20agent%20ecosystem." class="cta">📧 Schedule a Technical Briefing</a>
-    </div>
-    </div>
 
-    <div class="cards">
-  <div class="card">
-    <h2>📦 ACI — Agent Interaction Specification</h2>
-    <p>Manifest schema and validation library for declaring agent identity, capabilities, and constraints.</p>
-    <pre><code>pip install aci-spec</code></pre>
-    <pre><code>from aci import SpecValidator
+<!-- ═══ Navigation ═══ -->
+<nav>
+  <a href="#" class="logo">⟨⟩ <span>agent-interaction-specs</span></a>
+  <div class="nav-links">
+    <a href="#specs">Specs</a>
+    <a href="#contact">Contact</a>
+    <a href="#demo">Book a Demo</a>
+    <a href="https://github.com/narko4u/agent-interaction-specs" target="_blank" class="btn btn-outline" style="padding:0.4rem 1rem;font-size:0.8rem;">GitHub →</a>
+  </div>
+</nav>
+
+<!-- ═══ Hero ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badges">
+      <span class="badge badge-aci">ACI v0.1.0</span>
+      <span class="badge badge-aip">AIP v0.1.0</span>
+      <span class="badge badge-ajson">AJSON v0.1.0</span>
+    </div>
+    <h1>Open Standards for <span class="highlight">Autonomous AI Agents</span></h1>
+    <p class="subtitle">
+      A unified open-source stack for agent identity, governance, interaction protocols,
+      and tamper-evident evidence chains — built for the multi-agent future.
+    </p>
+    <div class="hero-actions">
+      <a href="#specs" class="btn btn-primary">Explore the Stack ↓</a>
+      <a href="https://github.com/narko4u/agent-interaction-specs" target="_blank" class="btn btn-outline">★ Star on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<div class="gradient-line"></div>
+
+<!-- ═══ Spec Cards ═══ -->
+<section id="specs" class="container" style="padding-top: 4rem;">
+  <div class="section-header">
+    <h2>The Stack</h2>
+    <p>Three interoperable specifications that together form a complete framework for autonomous agent governance.</p>
+  </div>
+
+  <div class="cards">
+    <!-- ACI -->
+    <div class="card">
+      <span class="card-tag tag-aci">ACI</span>
+      <h3>Agent Interaction Specification</h3>
+      <p class="card-desc">Declare who your agent is, what it can do, and what rules it follows. Schema + Python validation library.</p>
+      <pre><code>pip install aci-spec</code></pre>
+      <pre><code>from aci import SpecValidator
 v = SpecValidator()
 manifest = v.validate_manifest({
     "agent_name": "my-agent",
@@ -77,32 +357,106 @@ manifest = v.validate_manifest({
     "capabilities": ["web", "code"],
     "constraints": {"max_tokens": 16000}
 })</code></pre>
-    <a href="https://github.com/narko4u/agent-interaction-specs/tree/main/aci/py" style="color: var(--accent);">→ ACI Python package →</a>
-  </div>
+      <a href="https://github.com/narko4u/agent-interaction-specs/tree/main/aci/py" class="card-link" style="color:var(--accent);">→ Explore ACI Python package →</a>
+    </div>
 
-  <div class="card">
-    <h2>🔗 AIP — Agent Interaction Protocol</h2>
-    <p>Receipt chain data types for recording and verifying agent actions with E0-E4 evidence grading.</p>
-    <pre><code>go get github.com/empirelabs/aip</code></pre>
-    <pre><code>import "github.com/empirelabs/aip"
+    <!-- AIP -->
+    <div class="card">
+      <span class="card-tag tag-aip">AIP</span>
+      <h3>Agent Interaction Protocol</h3>
+      <p class="card-desc">Record and verify every agent action with an E0–E4 evidence-graded receipt chain. Go module.</p>
+      <pre><code>go get github.com/empirelabs/aip</code></pre>
+      <pre><code>import "github.com/empirelabs/aip"
 receipt := aip.AgentReceipt{
     AgentName:  "my-agent",
     ActionType: "execute",
     Status:     "allowed",
+    EvidenceE3: "sha256:abc...",
 }</code></pre>
-    <a href="https://github.com/narko4u/agent-interaction-specs/tree/main/aip/go" style="color: #3b82f6;">→ AIP Go module →</a>
-  </div>
+      <a href="https://github.com/narko4u/agent-interaction-specs/tree/main/aip/go" class="card-link" style="color:var(--blue);">→ Explore AIP Go module →</a>
+    </div>
 
-  <div class="card">
-    <h2>📄 AJSON — Agent JSON Notation</h2>
-    <p>Superset of JSON supporting agent-native primitives, capability declarations, and interaction records.</p>
-    <p style="color: var(--muted);">Specification and reference implementation — coming soon.</p>
+    <!-- AJSON -->
+    <div class="card">
+      <span class="card-tag tag-ajson">AJSON</span>
+      <h3>Agent JSON Notation</h3>
+      <p class="card-desc">A superset of JSON purpose-built for agent manifests, interaction records, and capability declarations.</p>
+      <pre><code>{
+  "agent": "my-agent",
+  "version": "1.0.0",
+  "capabilities": [
+    {"id": "web", "schema": "ajson://web/v1"}
+  ],
+  "constraints": {
+    "max_tokens": 16000,
+    "protocols": ["aip/v1"]
+  }
+}</code></pre>
+      <p style="color:var(--muted);font-size:0.82rem;margin-top:0.5rem;">Specification & reference implementation — coming soon.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Social Proof ═══ -->
+<div class="container">
+  <div class="social-proof">
+    <a href="https://github.com/narko4u/agent-interaction-specs/stargazers" target="_blank" class="social-item">
+      <span>★</span> <span class="stat">Open Source</span> — MIT Licensed
+    </a>
+    <a href="https://github.com/narko4u/agent-interaction-specs" target="_blank" class="social-item">
+      <span>⎔</span> Active Development
+    </a>
+    <a href="https://www.empirelabs.com.au" target="_blank" class="social-item">
+      <span>🏢</span> Backed by Empire Labs
+    </a>
   </div>
 </div>
 
-<p class="footer">
-  MIT Licensed · <a href="https://github.com/narko4u/agent-interaction-specs">GitHub</a> ·
-  <a href="https://www.empirelabs.com.au">Empire Labs Pty Ltd</a>
-</p>
+<!-- ═══ Lead Capture ═══ -->
+<section id="contact" class="lead-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Stay in the Loop</h2>
+      <p>Get early access to new releases, the AJSON spec, and integration guides.</p>
+    </div>
+    <form class="lead-form" action="mailto:contact@empirelabs.com.au" method="post" enctype="text/plain">
+      <div class="form-row">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="you@company.com" required>
+      </div>
+      <input type="text" name="company" placeholder="Company (optional)">
+      <textarea name="message" placeholder="Tell us about your agent ecosystem and how we can help..."></textarea>
+      <button type="submit" class="btn btn-primary">📨 Send Inquiry</button>
+      <p class="form-note">We'll never share your details. Replies go to <strong>contact@empirelabs.com.au</strong>.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ═══ Book a Demo ═══ -->
+<section id="demo" class="demo-section">
+  <div class="container">
+    <h2>See It in Action</h2>
+    <p>Schedule a 30-minute technical briefing with the team behind the stack.</p>
+    <div class="demo-card">
+      <div class="cal-icon">📅</div>
+      <h3>Book a Demo</h3>
+      <p>Walk through ACI, AIP, and AJSON with a live agent governance demo. No sales pitch — just the tech.</p>
+      <a href="https://calendly.com/empirelabs/agent-governance-demo" target="_blank" class="btn btn-primary">Choose a Time →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
+<footer class="footer">
+  <div>
+    © 2025 <a href="https://www.empirelabs.com.au" target="_blank">Empire Labs Pty Ltd</a>. All rights reserved.
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/narko4u/agent-interaction-specs" target="_blank">GitHub</a>
+    <a href="https://www.empirelabs.com.au" target="_blank">www.empirelabs.com.au</a>
+    <a href="mailto:contact@empirelabs.com.au">Contact</a>
+  </div>
+</footer>
+
 </body>
 </html>

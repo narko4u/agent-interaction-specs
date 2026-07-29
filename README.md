@@ -4,6 +4,8 @@
 
 An open standards stack for autonomous agent interaction, governance, and evidence.
 
+> 🌐 **Landing page:** [https://narko4u.github.io/agent-interaction-specs/](https://narko4u.github.io/agent-interaction-specs/)
+
 ## What's Here
 
 - **ACI** — Agent Interaction Specification: agent manifest schema and validation library
