@@ -6,7 +6,7 @@ AIP is the action protocol layer. Once an agent discovers capabilities via ACI, 
 
 ## Registry
 
-- **Go Module:** `github.com/empirelabs/aip`
+- **Go Module:** `github.com/narko4u/agent-interaction-specs/aip`
 - **Repo source:** [`narko4u/witnessos`](https://github.com/narko4u/witnessos) (AIP spec lives inside the WitnessOS repository)
 
 ## Core Concepts

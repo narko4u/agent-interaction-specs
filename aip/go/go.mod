@@ -1,3 +1,3 @@
-module github.com/empirelabs/aip
+module github.com/narko4u/agent-interaction-specs/aip
 
 go 1.21

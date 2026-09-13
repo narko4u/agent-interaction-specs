@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/empirelabs/aip"
+	"github.com/narko4u/agent-interaction-specs/aip"
 )
 
 func main() {

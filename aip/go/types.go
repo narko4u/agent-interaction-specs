@@ -30,12 +30,12 @@ type ActionResponse struct {
 
 // Receipt is the top-level envelope for an agent interaction protocol message.
 type Receipt struct {
-	ID           string          `json:"id"`
-	Protocol     string          `json:"protocol"`
-	Version      string          `json:"version"`
-	Timestamp    time.Time       `json:"timestamp"`
-	Capabilities []Capability    `json:"capabilities,omitempty"`
-	Actions      []ActionRequest `json:"actions,omitempty"`
-	Responses    []ActionResponse `json:"responses,omitempty"`
+	ID           string                 `json:"id"`
+	Protocol     string                 `json:"protocol"`
+	Version      string                 `json:"version"`
+	Timestamp    time.Time              `json:"timestamp"`
+	Capabilities []Capability           `json:"capabilities,omitempty"`
+	Actions      []ActionRequest        `json:"actions,omitempty"`
+	Responses    []ActionResponse       `json:"responses,omitempty"`
 	Metadata     map[string]interface{} `json:"metadata,omitempty"`
 }

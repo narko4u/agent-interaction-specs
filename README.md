@@ -13,7 +13,7 @@ An open standards stack for autonomous agent interaction, governance, and eviden
   - Schema: `agent_name`, `version`, `capabilities`, `constraints`
 
 - **AIP** — Agent Interaction Protocol: receipt chain and interaction record types
-  - `aip/go/` — Go module (`go get github.com/empirelabs/aip`)
+  - `aip/go/` — Go module (`go get github.com/narko4u/agent-interaction-specs/aip`)
   - Types: `AgentReceipt`, `ActionRecord`, `ReceiptChain`, `Capability`
 
 - **AJSON** — Agent JSON Notation: superset of JSON for agent manifests and interaction records
@@ -33,7 +33,7 @@ manifest = v.validate_manifest({
 ```
 
 ```go
-import "github.com/empirelabs/aip"
+import "github.com/narko4u/agent-interaction-specs/aip"
 
 receipt := aip.AgentReceipt{
     AgentName:   "my-agent",
@@ -52,4 +52,4 @@ MIT — Empire Labs Pty Ltd
 
 ---
 
-<sub>Part of the [WitnessOS launch family](https://github.com/narko4u/witnessos): [witnessos-alpha](https://github.com/narko4u/witnessos-alpha) · [witnessos-compliance](https://github.com/narko4u/witnessos-compliance) · [eu-ai-act-compliance-grade](https://github.com/narko4u/eu-ai-act-compliance-grade) · [witnessos-rogue-agent-audit](https://github.com/narko4u/witnessos-rogue-agent-audit) · [witnessos-agent-asset-registry](https://github.com/narko4u/witnessos-agent-asset-registry) · [witnessos-verifier](https://github.com/narko4u/witnessos-verifier) · [agent-interaction-specs](https://github.com/narko4u/agent-interaction-specs) · [aci-spec](https://github.com/narko4u/aci-spec) · [aip-spec](https://github.com/narko4u/aip-spec) · [ajson](https://github.com/narko4u/ajson) — [Empire Labs Pty Ltd](https://www.empirelabs.com.au)</sub>
+<sub>Part of the [WitnessOS launch family](https://github.com/narko4u/witnessos): [witnessos-alpha](https://github.com/narko4u/witnessos-alpha) · [eu-ai-act-compliance-grade](https://github.com/narko4u/eu-ai-act-compliance-grade) · [witnessos-verifier](https://github.com/narko4u/witnessos-verifier) · [agent-interaction-specs](https://github.com/narko4u/agent-interaction-specs) · [aci-spec](https://github.com/narko4u/aci-spec) · [aip-spec](https://github.com/narko4u/aip-spec) · [ajson](https://github.com/narko4u/ajson) — [Empire Labs Pty Ltd](https://www.empirelabs.com.au)</sub>
