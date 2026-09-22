@@ -43,6 +43,22 @@ receipt := aip.AgentReceipt{
 }
 ```
 
+---
+
+## Acknowledgements
+
+This repository packages the Agent Interaction Specifications - the Python `aci`
+package and the Go `aip` package.
+
+Neither has third-party runtime dependencies: `aci/py` uses the Python standard
+library, and `aip/go` uses the Go standard library. There is therefore no
+upstream code to attribute.
+
+Both specifications are original work by Empire Labs Pty Ltd and have not been
+reviewed, approved or certified by any standards body.
+
+---
+
 ## License
 
 MIT — Empire Labs Pty Ltd
